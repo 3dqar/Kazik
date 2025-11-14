@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Ulixwa Casino</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        text-align: center;
+        padding: 20px 0;
+        background: rgba(0,0,0,0.3);
+        border-radius: 20px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .header h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .balance {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffd700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .nav-btn {
+        padding: 15px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 15px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-btn:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+    }
+
+    .game-area {
+        background: rgba(0,0,0,0.3);
+        border-radius: 20px;
+        padding: 20px;
+        min-height: 400px;
+        backdrop-filter: blur(10px);
+    }
+
+    .game-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .game-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .game-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .game-emoji {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .bet-area {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .bet-btn {
+        flex: 1;
+        padding: 12px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .bet-btn.active {
+        background: #ffd700;
+        color: #000;
+        border-color: #ffd700;
+    }
+
+    .play-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border: none;
+        border-radius: 15px;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s;
+    }
+
+    .play-btn:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 30px rgba(245, 87, 108, 0.5);
+    }
+
+    .play-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .slots-display {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .slot {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        border: 3px solid rgba(255,255,255,0.3);
+    }
+
+    .plinko-board {
+        position: relative;
+        height: 400px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 15px;
+        margin: 20px 0;
+    }
+
+    .multiplier-row {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+
+    .multiplier {
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .result-msg {
+        text-align: center;
+        font-size: 24px;
+        margin: 20px 0;
+        font-weight: bold;
+        min-height: 30px;
+    }
+
+    .win {
+        color: #4ade80;
+        text-shadow: 0 0 10px #4ade80;
+    }
+
+    .lose {
+        color: #ef4444;
+    }
+
+    .ad-btn {
+        background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        margin-top: 10px;
+    }
+
+    .buy-btn {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    }
+
+    .roulette-wheel {
+        width: 250px;
+        height: 250px;
+        margin: 20px auto;
+        border-radius: 50%;
+        background: conic-gradient(
+            from 0deg,
+            #ef4444 0deg 45deg,
+            #000 45deg 90deg,
+            #ef4444 90deg 135deg,
+            #000 135deg 180deg,
+            #ef4444 180deg 225deg,
+            #000 225deg 270deg,
+            #ef4444 270deg 315deg,
+            #000 315deg 360deg
+        );
+        border: 8px solid gold;
+        position: relative;
+        transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .roulette-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: gold;
+        border-radius: 50%;
+        border: 3px solid white;
+    }
+
+    .color-bet-area {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .color-btn {
+        flex: 1;
+        padding: 20px;
+        border-radius: 10px;
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .red-btn {
+        background: #ef4444;
+        color: white;
+    }
+
+    .black-btn {
+        background: #000;
+        color: white;
+    }
+
+    .trading-chart {
+        height: 200px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 15px;
+        margin: 20px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .rocket-game {
+        text-align: center;
+    }
+
+    .rocket-display {
+        font-size: 100px;
+        margin: 30px 0;
+    }
+
+    .multiplier-display {
+        font-size: 48px;
+        font-weight: bold;
+        color: #ffd700;
+        margin: 20px 0;
+    }
+
+    .cashout-btn {
+        background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    }
+
+    .free-spins {
+        background: rgba(255,215,0,0.2);
+        border: 2px solid gold;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .mine-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .mine-cell {
+        aspect-ratio: 1;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        border: 2px solid rgba(255,255,255,0.3);
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .mine-cell:hover:not(.revealed) {
+        background: rgba(255,255,255,0.3);
+    }
+
+    .mine-cell.revealed {
+        cursor: default;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎰 Ulixwa Casino</h1>
+            <div class="balance">💰 €<span id="balance">10.00</span></div>
+            <button class="nav-btn ad-btn" onclick="watchAd()">📺 Watch Ad (+€2)</button>
+            <button class="nav-btn buy-btn" onclick="buyCoins()">⭐ Buy Coins</button>
+        </div>
+
+```
+    <div class="nav">
+        <button class="nav-btn" onclick="showGames()">🎮 Games</button>
+        <button class="nav-btn" onclick="showSlots()">🎰 Slots</button>
+        <button class="nav-btn" onclick="showPlinko()">🎯 Plinko</button>
+        <button class="nav-btn" onclick="showRoulette()">🎡 Roulette</button>
+        <button class="nav-btn" onclick="showMines()">💣 Mines</button>
+        <button class="nav-btn" onclick="showRocket()">🚀 Rocket</button>
+        <button class="nav-btn" onclick="showTrading()">📈 Trading</button>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <div class="game-grid" id="gameGrid">
+            <div class="game-card" onclick="showSlots()">
+                <div class="game-emoji">🎰</div>
+                <div>Slots</div>
+            </div>
+            <div class="game-card" onclick="showPlinko()">
+                <div class="game-emoji">🎯</div>
+                <div>Plinko</div>
+            </div>
+            <div class="game-card" onclick="showRoulette()">
+                <div class="game-emoji">🎡</div>
+                <div>Roulette</div>
+            </div>
+            <div class="game-card" onclick="showMines()">
+                <div class="game-emoji">💣</div>
+                <div>Mines</div>
+            </div>
+            <div class="game-card" onclick="showRocket()">
+                <div class="game-emoji">🚀</div>
+                <div>Rocket</div>
+            </div>
+            <div class="game-card" onclick="showTrading()">
+                <div class="game-emoji">📈</div>
+                <div>Trading</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let balance = 10.00;
+    let currentBet = 1;
+    let freeSpins = 3;
+    let gameState = {};
+
+    // Initialize Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        loadGameData();
+    }
+
+    function updateBalance(amount) {
+        balance += amount;
+        balance = Math.max(0, balance);
+        document.getElementById('balance').textContent = balance.toFixed(2);
+        saveGameData();
+    }
+
+    function saveGameData() {
+        const data = {
+            balance: balance,
+            freeSpins: freeSpins,
+            timestamp: Date.now()
+        };
+        if (window.Telegram && window.Telegram.WebApp) {
+            Telegram.WebApp.CloudStorage.setItem('gameData', JSON.stringify(data));
+        }
+        localStorage.setItem('ulixwa_casino', JSON.stringify(data));
+    }
+
+    function loadGameData() {
+        const localData = localStorage.getItem('ulixwa_casino');
+        if (localData) {
+            const data = JSON.parse(localData);
+            balance = data.balance || 10;
+            freeSpins = data.freeSpins || 3;
+            updateBalance(0);
+        }
+        
+        if (window.Telegram && window.Telegram.WebApp) {
+            Telegram.WebApp.CloudStorage.getItem('gameData', (err, data) => {
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    balance = parsed.balance || 10;
+                    freeSpins = parsed.freeSpins || 3;
+                    updateBalance(0);
+                }
+            });
+        }
+    }
+
+    function watchAd() {
+        alert('📺 Watching ad... +€2.00 earned!');
+        updateBalance(2);
+    }
+
+    function buyCoins() {
+        if (window.Telegram && window.Telegram.WebApp) {
+            alert('⭐ Opening Telegram Stars payment... (Would integrate with Telegram Stars API)');
+            updateBalance(10);
+        } else {
+            alert('⭐ Telegram Stars payment - €10 added for demo');
+            updateBalance(10);
+        }
+    }
+
+    function showGames() {
+        document.getElementById('gameArea').innerHTML = `
+            <div class="game-grid" id="gameGrid">
+                <div class="game-card" onclick="showSlots()">
+                    <div class="game-emoji">🎰</div>
+                    <div>Slots</div>
+                </div>
+                <div class="game-card" onclick="showPlinko()">
+                    <div class="game-emoji">🎯</div>
+                    <div>Plinko</div>
+                </div>
+                <div class="game-card" onclick="showRoulette()">
+                    <div class="game-emoji">🎡</div>
+                    <div>Roulette</div>
+                </div>
+                <div class="game-card" onclick="showMines()">
+                    <div class="game-emoji">💣</div>
+                    <div>Mines</div>
+                </div>
+                <div class="game-card" onclick="showRocket()">
+                    <div class="game-emoji">🚀</div>
+                    <div>Rocket</div>
+                </div>
+                <div class="game-card" onclick="showTrading()">
+                    <div class="game-emoji">📈</div>
+                    <div>Trading</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function showSlots() {
+        const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣', '⭐'];
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">🎰 Slot Machine</h2>
+            <div class="free-spins" ${freeSpins === 0 ? 'style="display:none"' : ''}>
+                ✨ Free Spins Available: ${freeSpins}
+            </div>
+            <div class="slots-display">
+                <div class="slot" id="slot1">🍒</div>
+                <div class="slot" id="slot2">🍋</div>
+                <div class="slot" id="slot3">🍊</div>
+            </div>
+            <div class="result-msg" id="result"></div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; updateBets()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; updateBets()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; updateBets()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; updateBets()">€5</button>
+            </div>
+            <button class="play-btn" onclick="spinSlots()">🎰 SPIN (€${currentBet})</button>
+            ${freeSpins > 0 ? '<button class="play-btn" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);" onclick="spinSlots(true)">✨ FREE SPIN</button>' : ''}
+        `;
+    }
+
+    function updateBets() {
+        showSlots();
+    }
+
+    function spinSlots(useFree = false) {
+        if (!useFree && balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+
+        if (useFree && freeSpins <= 0) {
+            alert('No free spins available!');
+            return;
+        }
+
+        if (!useFree) {
+            updateBalance(-currentBet);
+        } else {
+            freeSpins--;
+        }
+
+        const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣', '⭐'];
+        const slots = [
+            document.getElementById('slot1'),
+            document.getElementById('slot2'),
+            document.getElementById('slot3')
+        ];
+
+        let spins = 0;
+        const interval = setInterval(() => {
+            slots.forEach(slot => {
+                slot.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            });
+            spins++;
+            if (spins > 15) {
+                clearInterval(interval);
+                checkWin();
+            }
+        }, 100);
+    }
+
+    function checkWin() {
+        const slot1 = document.getElementById('slot1').textContent;
+        const slot2 = document.getElementById('slot2').textContent;
+        const slot3 = document.getElementById('slot3').textContent;
+        const result = document.getElementById('result');
+
+        if (slot1 === slot2 && slot2 === slot3) {
+            const winAmount = currentBet * 10;
+            updateBalance(winAmount);
+            result.className = 'result-msg win';
+            result.textContent = `🎉 JACKPOT! Won €${winAmount.toFixed(2)}!`;
+        } else if (slot1 === slot2 || slot2 === slot3) {
+            const winAmount = currentBet * 2;
+            updateBalance(winAmount);
+            result.className = 'result-msg win';
+            result.textContent = `✨ WIN! €${winAmount.toFixed(2)}!`;
+        } else {
+            result.className = 'result-msg lose';
+            result.textContent = '❌ Try again!';
+        }
+        saveGameData();
+    }
+
+    function showPlinko() {
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">🎯 Plinko</h2>
+            <div class="plinko-board" id="plinkoBoard">
+                <div style="text-align: center; padding-top: 20px; font-size: 48px;">⚽</div>
+                <div style="text-align: center; margin-top: 50px; font-size: 24px;">Drop the ball!</div>
+            </div>
+            <div class="multiplier-row">
+                <div class="multiplier">0.5x</div>
+                <div class="multiplier">1x</div>
+                <div class="multiplier">2x</div>
+                <div class="multiplier">5x</div>
+                <div class="multiplier">10x</div>
+                <div class="multiplier">2x</div>
+                <div class="multiplier">1x</div>
+                <div class="multiplier">0.5x</div>
+            </div>
+            <div class="result-msg" id="result"></div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; showPlinko()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; showPlinko()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; showPlinko()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; showPlinko()">€5</button>
+            </div>
+            <button class="play-btn" onclick="dropPlinko()">🎯 DROP (€${currentBet})</button>
+        `;
+    }
+
+    function dropPlinko() {
+        if (balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+
+        updateBalance(-currentBet);
+        const multipliers = [0.5, 1, 2, 5, 10, 2, 1, 0.5];
+        const result = multipliers[Math.floor(Math.random() * multipliers.length)];
+        const winAmount = currentBet * result;
+
+        setTimeout(() => {
+            updateBalance(winAmount);
+            const resultEl = document.getElementById('result');
+            if (result >= 2) {
+                resultEl.className = 'result-msg win';
+                resultEl.textContent = `🎉 ${result}x! Won €${winAmount.toFixed(2)}!`;
+            } else {
+                resultEl.className = 'result-msg';
+                resultEl.textContent = `${result}x - €${winAmount.toFixed(2)}`;
+            }
+        }, 2000);
+    }
+
+    function showRoulette() {
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">🎡 Roulette</h2>
+            <div class="roulette-wheel" id="rouletteWheel">
+                <div class="roulette-center"></div>
+            </div>
+            <div class="result-msg" id="result"></div>
+            <div class="color-bet-area">
+                <button class="color-btn red-btn" onclick="betColor('red')">🔴 RED (2x)</button>
+                <button class="color-btn black-btn" onclick="betColor('black')">⚫ BLACK (2x)</button>
+            </div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; showRoulette()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; showRoulette()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; showRoulette()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; showRoulette()">€5</button>
+            </div>
+        `;
+    }
+
+    function betColor(color) {
+        if (balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+
+        updateBalance(-currentBet);
+        const wheel = document.getElementById('rouletteWheel');
+        const spins = 5 + Math.random() * 3;
+        const rotation = 360 * spins + Math.random() * 360;
+        wheel.style.transform = `rotate(${rotation}deg)`;
+
+        setTimeout(() => {
+            const finalAngle = rotation % 360;
+            const isRed = (finalAngle >= 0 && finalAngle < 45) || 
+                         (finalAngle >= 90 && finalAngle < 135) ||
+                         (finalAngle >= 180 && finalAngle < 225) ||
+                         (finalAngle >= 270 && finalAngle < 315);
+            
+            const winColor = isRed ? 'red' : 'black';
+            const result = document.getElementById('result');
+
+            if (winColor === color) {
+                const winAmount = currentBet * 2;
+                updateBalance(winAmount);
+                result.className = 'result-msg win';
+                result.textContent = `🎉 ${color.toUpperCase()} WINS! €${winAmount.toFixed(2)}!`;
+            } else {
+                result.className = 'result-msg lose';
+                result.textContent = `❌ ${winColor.toUpperCase()} - Better luck next time!`;
+            }
+        }, 3000);
+    }
+
+    function showMines() {
+        gameState.mines = [];
+        gameState.revealed = [];
+        gameState.currentMultiplier = 1;
+        
+        for (let i = 0; i < 5; i++) {
+            const minePos = Math.floor(Math.random() * 25);
+            if (!gameState.mines.includes(minePos)) {
+                gameState.mines.push(minePos);
+            }
+        }
+
+        let grid = '<div class="mine-grid">';
+        for (let i = 0; i < 25; i++) {
+            grid += `<div class="mine-cell" onclick="revealMine(${i})">❓</div>`;
+        }
+        grid += '</div>';
+
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">💣 Mines</h2>
+            <div style="text-align: center; margin: 15px 0;">
+                <div style="font-size: 24px; font-weight: bold; color: #ffd700;">Current Multiplier: <span id="mineMultiplier">1.00</span>x</div>
+                <div style="font-size: 18px; margin-top: 10px;">Potential Win: €<span id="potentialWin">${currentBet.toFixed(2)}</span></div>
+            </div>
+            ${grid}
+            <div class="result-msg" id="result"></div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; showMines()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; showMines()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; showMines()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; showMines()">€5</button>
+            </div>
+            <button class="play-btn" onclick="startMines()" id="startBtn">💣 START (€${currentBet})</button>
+            <button class="play-btn cashout-btn hidden" onclick="cashoutMines()" id="cashoutBtn">💰 CASHOUT</button>
+        `;
+    }
+
+    function startMines() {
+        if (balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+        updateBalance(-currentBet);
+        document.getElementById('startBtn').classList.add('hidden');
+        document.getElementById('cashoutBtn').classList.remove('hidden');
+        gameState.minesActive = true;
+    }
+
+    function revealMine(index) {
+        if (!gameState.minesActive || gameState.revealed.includes(index)) return;
+
+        const cells = document.querySelectorAll('.mine-cell');
+        gameState.revealed.push(index);
+
+        if (gameState.mines.includes(index)) {
+            cells[index].textContent = '💣';
+            cells[index].classList.add('revealed');
+            cells[index].style.background = 'rgba(239, 68, 68, 0.5)';
+            
+            gameState.mines.forEach(m => {
+                cells[m].textContent = '💣';
+                cells[m].classList.add('revealed');
+            });
+            
+            document.getElementById('result').className = 'result-msg lose';
+            document.getElementById('result').textContent = '💥 BOOM! Game Over!';
+            gameState.minesActive = false;
+            document.getElementById('cashoutBtn').classList.add('hidden');
+            setTimeout(() => showMines(), 2000);
+        } else {
+            cells[index].textContent = '💎';
+            cells[index].classList.add('revealed');
+            cells[index].style.background = 'rgba(74, 222, 128, 0.5)';
+            
+            gameState.currentMultiplier += 0.3;
+            document.getElementById('mineMultiplier').textContent = gameState.currentMultiplier.toFixed(2);
+            document.getElementById('potentialWin').textContent = (currentBet * gameState.currentMultiplier).toFixed(2);
+        }
+    }
+
+    function cashoutMines() {
+        if (!gameState.minesActive) return;
+        
+        const winAmount = currentBet * gameState.currentMultiplier;
+        updateBalance(winAmount);
+        
+        document.getElementById('result').className = 'result-msg win';
+        document.getElementById('result').textContent = `🎉 Cashed Out! Won €${winAmount.toFixed(2)}!`;
+        
+        gameState.minesActive = false;
+        document.getElementById('cashoutBtn').classList.add('hidden');
+    }
+
+    function showRocket() {
+        gameState.rocketActive = false;
+        gameState.rocketMultiplier = 1.00;
+        
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">🚀 Rocket</h2>
+            <div class="rocket-game">
+                <div class="rocket-display" id="rocketEmoji">🚀</div>
+                <div class="multiplier-display" id="rocketMultiplier">1.00x</div>
+                <div style="font-size: 18px; margin: 10px 0;">Potential Win: €<span id="rocketWin">${currentBet.toFixed(2)}</span></div>
+            </div>
+            <div class="result-msg" id="result"></div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; showRocket()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; showRocket()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; showRocket()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; showRocket()">€5</button>
+            </div>
+            <button class="play-btn" onclick="launchRocket()" id="launchBtn">🚀 LAUNCH (€${currentBet})</button>
+            <button class="play-btn cashout-btn hidden" onclick="cashoutRocket()" id="rocketCashout">💰 CASHOUT</button>
+        `;
+    }
+
+    function launchRocket() {
+        if (balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+        
+        updateBalance(-currentBet);
+        gameState.rocketActive = true;
+        gameState.rocketMultiplier = 1.00;
+        gameState.crashPoint = 1 + Math.random() * 9; // Crash between 1x and 10x
+        
+        document.getElementById('launchBtn').classList.add('hidden');
+        document.getElementById('rocketCashout').classList.remove('hidden');
+        
+        const interval = setInterval(() => {
+            if (!gameState.rocketActive) {
+                clearInterval(interval);
+                return;
+            }
+            
+            gameState.rocketMultiplier += 0.1;
+            document.getElementById('rocketMultiplier').textContent = gameState.rocketMultiplier.toFixed(2) + 'x';
+            document.getElementById('rocketWin').textContent = (currentBet * gameState.rocketMultiplier).toFixed(2);
+            
+            if (gameState.rocketMultiplier >= gameState.crashPoint) {
+                clearInterval(interval);
+                crashRocket();
+            }
+        }, 200);
+    }
+
+    function crashRocket() {
+        gameState.rocketActive = false;
+        document.getElementById('rocketEmoji').textContent = '💥';
+        document.getElementById('result').className = 'result-msg lose';
+        document.getElementById('result').textContent = `💥 CRASHED at ${gameState.rocketMultiplier.toFixed(2)}x!`;
+        document.getElementById('rocketCashout').classList.add('hidden');
+        
+        setTimeout(() => {
+            document.getElementById('rocketEmoji').textContent = '🚀';
+            document.getElementById('launchBtn').classList.remove('hidden');
+        }, 2000);
+    }
+
+    function cashoutRocket() {
+        if (!gameState.rocketActive) return;
+        
+        gameState.rocketActive = false;
+        const winAmount = currentBet * gameState.rocketMultiplier;
+        updateBalance(winAmount);
+        
+        document.getElementById('result').className = 'result-msg win';
+        document.getElementById('result').textContent = `🎉 Cashed out at ${gameState.rocketMultiplier.toFixed(2)}x! Won €${winAmount.toFixed(2)}!`;
+        document.getElementById('rocketCashout').classList.add('hidden');
+        
+        setTimeout(() => {
+            document.getElementById('launchBtn').classList.remove('hidden');
+        }, 2000);
+    }
+
+    function showTrading() {
+        gameState.tradingPrice = 100;
+        gameState.tradingPosition = null;
+        gameState.tradingActive = false;
+        
+        document.getElementById('gameArea').innerHTML = `
+            <h2 style="text-align: center; margin-bottom: 20px;">📈 Virtual Trading</h2>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 48px; font-weight: bold; color: #ffd700;">$<span id="tradingPrice">100.00</span></div>
+                <div style="font-size: 18px; margin-top: 10px;">Position: <span id="position">None</span></div>
+                <div style="font-size: 18px;">P&L: €<span id="pnl">0.00</span></div>
+            </div>
+            <div class="trading-chart" id="tradingChart">
+                <canvas id="chartCanvas" width="400" height="200"></canvas>
+            </div>
+            <div class="result-msg" id="result"></div>
+            <div class="bet-area">
+                <button class="bet-btn ${currentBet === 0.5 ? 'active' : ''}" onclick="currentBet = 0.5; showTrading()">€0.50</button>
+                <button class="bet-btn ${currentBet === 1 ? 'active' : ''}" onclick="currentBet = 1; showTrading()">€1</button>
+                <button class="bet-btn ${currentBet === 2 ? 'active' : ''}" onclick="currentBet = 2; showTrading()">€2</button>
+                <button class="bet-btn ${currentBet === 5 ? 'active' : ''}" onclick="currentBet = 5; showTrading()">€5</button>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="play-btn" style="background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);" onclick="openTrade('long')" id="longBtn">📈 LONG (€${currentBet})</button>
+                <button class="play-btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);" onclick="openTrade('short')" id="shortBtn">📉 SHORT (€${currentBet})</button>
+            </div>
+            <button class="play-btn cashout-btn hidden" onclick="closeTrade()" id="closeBtn">💰 CLOSE POSITION</button>
+        `;
+        
+        startTradingSimulation();
+    }
+
+    function startTradingSimulation() {
+        if (gameState.tradingInterval) clearInterval(gameState.tradingInterval);
+        
+        gameState.tradingInterval = setInterval(() => {
+            const change = (Math.random() - 0.5) * 5;
+            gameState.tradingPrice = Math.max(50, Math.min(150, gameState.tradingPrice + change));
+            document.getElementById('tradingPrice').textContent = gameState.tradingPrice.toFixed(2);
+            
+            if (gameState.tradingPosition) {
+                const priceDiff = gameState.tradingPrice - gameState.tradingPosition.entryPrice;
+                const multiplier = gameState.tradingPosition.type === 'long' ? 1 : -1;
+                const pnl = (priceDiff * multiplier * currentBet) / 10;
+                
+                document.getElementById('pnl').textContent = pnl.toFixed(2);
+                document.getElementById('pnl').style.color = pnl >= 0 ? '#4ade80' : '#ef4444';
+            }
+        }, 1000);
+    }
+
+    function openTrade(type) {
+        if (balance < currentBet) {
+            alert('Not enough balance!');
+            return;
+        }
+        
+        updateBalance(-currentBet);
+        gameState.tradingPosition = {
+            type: type,
+            entryPrice: gameState.tradingPrice,
+            amount: currentBet
+        };
+        
+        document.getElementById('position').textContent = type.toUpperCase() + ' @ $' + gameState.tradingPrice.toFixed(2);
+        document.getElementById('longBtn').classList.add('hidden');
+        document.getElementById('shortBtn').classList.add('hidden');
+        document.getElementById('closeBtn').classList.remove('hidden');
+    }
+
+    function closeTrade() {
+        if (!gameState.tradingPosition) return;
+        
+        const priceDiff = gameState.tradingPrice - gameState.tradingPosition.entryPrice;
+        const multiplier = gameState.tradingPosition.type === 'long' ? 1 : -1;
+        const pnl = (priceDiff * multiplier * currentBet) / 10;
+        const totalReturn = currentBet + pnl;
+        
+        updateBalance(Math.max(0, totalReturn));
+        
+        const result = document.getElementById('result');
+        if (pnl > 0) {
+            result.className = 'result-msg win';
+            result.textContent = `🎉 Profit! +€${pnl.toFixed(2)}`;
+        } else {
+            result.className = 'result-msg lose';
+            result.textContent = `📉 Loss: €${pnl.toFixed(2)}`;
+        }
+        
+        gameState.tradingPosition = null;
+        document.getElementById('position').textContent = 'None';
+        document.getElementById('pnl').textContent = '0.00';
+        document.getElementById('longBtn').classList.remove('hidden');
+        document.getElementById('shortBtn').classList.remove('hidden');
+        document.getElementById('closeBtn').classList.add('hidden');
+    }
+
+    // Initialize
+    loadGameData();
+</script>
+```
+
+</body>
+</html>
