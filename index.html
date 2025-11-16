@@ -3,347 +3,337 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinko Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cannabis Tycoon 🌿</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
 ```
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        overflow-x: hidden;
         min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
+        padding-bottom: 20px;
     }
 
     .container {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        padding: 30px;
         max-width: 500px;
-        width: 100%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        margin: 0 auto;
+        padding: 10px;
     }
 
     .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
-
-    .balance {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        padding: 12px 20px;
-        border-radius: 50px;
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-    }
-
-    .balance-icon {
-        width: 24px;
-        height: 24px;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-    }
-
-    .main-menu {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .menu-btn {
-        padding: 20px;
-        border: none;
-        border-radius: 15px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .plinko-btn {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .plinko-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
-    }
-
-    .ads-btn {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    }
-
-    .ads-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
-    }
-
-    .game-screen {
-        display: none;
-    }
-
-    .game-screen.active {
-        display: block;
-    }
-
-    .game-controls {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-    }
-
-    .control-group {
-        margin-bottom: 15px;
-    }
-
-    .control-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #333;
-    }
-
-    .control-group input {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 16px;
-        transition: border 0.3s ease;
-    }
-
-    .control-group input:focus {
-        outline: none;
-        border-color: #667eea;
-    }
-
-    .ball-selector {
-        display: flex;
-        gap: 10px;
-        justify-content: space-between;
-    }
-
-    .ball-option {
-        flex: 1;
-        padding: 12px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        background: white;
-        cursor: pointer;
         text-align: center;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .ball-option:hover {
-        border-color: #667eea;
-    }
-
-    .ball-option.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-color: #667eea;
-    }
-
-    .drop-btn {
-        width: 100%;
-        padding: 18px;
-        border: none;
-        border-radius: 15px;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-    }
-
-    .drop-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5);
-    }
-
-    .drop-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .plinko-board {
-        background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
-        border-radius: 15px;
         padding: 20px;
-        position: relative;
-        height: 400px;
+        background: rgba(0,0,0,0.3);
+        border-radius: 20px;
         margin-bottom: 20px;
+        animation: slideDown 0.5s ease;
+    }
+
+    .header h1 {
+        font-size: 2em;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .stat-box {
+        background: rgba(255,255,255,0.2);
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.5s ease;
+    }
+
+    .stat-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #ffd700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .stat-label {
+        font-size: 0.9em;
+        opacity: 0.9;
+    }
+
+    .grow-area {
+        background: rgba(0,0,0,0.4);
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        min-height: 250px;
+        position: relative;
         overflow: hidden;
     }
 
-    .multipliers {
+    .plant-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .plant-slot {
+        aspect-ratio: 1;
+        background: rgba(139, 69, 19, 0.5);
+        border-radius: 15px;
         display: flex;
-        justify-content: space-around;
-        margin-top: 10px;
-        gap: 5px;
-    }
-
-    .multiplier {
-        flex: 1;
-        padding: 10px 5px;
-        border-radius: 10px;
-        text-align: center;
-        font-weight: bold;
-        color: white;
-        font-size: 14px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .multiplier.high {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .multiplier.medium {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .multiplier.low {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    }
-
-    .back-btn {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 10px;
-        background: #e0e0e0;
-        color: #333;
-        font-weight: 600;
+        align-items: center;
+        justify-content: center;
+        font-size: 3em;
         cursor: pointer;
         transition: all 0.3s ease;
+        border: 3px solid rgba(255,255,255,0.2);
+        position: relative;
     }
 
-    .back-btn:hover {
-        background: #d0d0d0;
+    .plant-slot:active {
+        transform: scale(0.95);
     }
 
-    .ball {
+    .plant-slot.growing {
+        animation: pulse 2s infinite;
+    }
+
+    .plant-slot.ready {
+        animation: bounce 1s infinite;
+        border-color: #00ff00;
+        box-shadow: 0 0 20px rgba(0,255,0,0.5);
+    }
+
+    .plant-progress {
         position: absolute;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 30% 30%, #ffffff, #ff6b6b);
-        box-shadow: 0 2px 10px rgba(255, 107, 107, 0.6);
-        z-index: 10;
+        bottom: 5px;
+        left: 5px;
+        right: 5px;
+        height: 5px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 3px;
+        overflow: hidden;
     }
 
-    .peg {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 30% 30%, #ffffff, #95a5a6);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    .plant-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #00ff00, #00aa00);
+        transition: width 0.3s ease;
     }
 
-    .result-message {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 15px;
-        font-weight: bold;
-        font-size: 18px;
-        display: none;
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
     }
 
-    .result-message.show {
-        display: block;
-    }
-
-    .result-message.win {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        color: white;
-    }
-
-    .result-message.lose {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-    }
-
-    .ad-screen {
-        display: none;
-        text-align: center;
-    }
-
-    .ad-screen.active {
-        display: block;
-    }
-
-    .ad-container {
+    .btn {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 40px;
-        border-radius: 15px;
-        color: white;
-        margin-bottom: 20px;
-    }
-
-    .ad-container h2 {
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
-
-    .ad-timer {
-        font-size: 48px;
-        font-weight: bold;
-        margin: 30px 0;
-    }
-
-    .watch-ad-btn {
-        width: 100%;
-        padding: 18px;
         border: none;
+        padding: 15px;
         border-radius: 15px;
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         color: white;
-        font-size: 18px;
+        font-size: 1.1em;
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    .watch-ad-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 233, 123, 0.5);
+    .btn:active {
+        transform: scale(0.95);
     }
 
-    .watch-ad-btn:disabled {
+    .btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
+    }
+
+    .btn.harvest {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .btn.shop {
+        background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        border-radius: 20px;
+        max-width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .close-btn {
+        background: rgba(255,255,255,0.2);
+        border: none;
+        color: white;
+        font-size: 1.5em;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .upgrade-item {
+        background: rgba(0,0,0,0.3);
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .upgrade-info h3 {
+        margin-bottom: 5px;
+    }
+
+    .upgrade-info p {
+        font-size: 0.9em;
+        opacity: 0.8;
+    }
+
+    .buy-btn {
+        background: #00ff00;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .buy-btn:disabled {
+        background: #666;
+        color: #999;
+    }
+
+    .referral-section {
+        background: rgba(0,0,0,0.3);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+    }
+
+    .referral-link {
+        background: rgba(255,255,255,0.1);
+        padding: 10px;
+        border-radius: 10px;
+        word-break: break-all;
+        margin: 10px 0;
+        font-size: 0.9em;
+    }
+
+    .coin-float {
+        position: fixed;
+        font-size: 2em;
+        pointer-events: none;
+        animation: floatUp 1s ease forwards;
+        z-index: 999;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes floatUp {
+        to {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+    }
+
+    .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .tab {
+        flex: 1;
+        padding: 10px;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .tab.active {
+        background: rgba(255,255,255,0.4);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
     }
 </style>
 ```
@@ -352,237 +342,521 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="balance">
-                <div class="balance-icon">€</div>
-                <span id="balance">10.00</span>
-            </div>
+            <h1>🌿 Cannabis Tycoon 🌿</h1>
+            <p>Grow • Harvest • Profit</p>
         </div>
 
 ```
-    <div id="mainMenu" class="main-menu">
-        <button class="menu-btn plinko-btn" onclick="showGame()">🎯 Play Plinko</button>
-        <button class="menu-btn ads-btn" onclick="showAds()">📺 Watch Ads & Earn</button>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-value" id="money">$0</div>
+            <div class="stat-label">💰 Money</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value" id="level">1</div>
+            <div class="stat-label">⭐ Level</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value" id="totalHarvest">0</div>
+            <div class="stat-label">🌿 Total Harvest</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value" id="referrals">0</div>
+            <div class="stat-label">👥 Referrals</div>
+        </div>
     </div>
 
-    <div id="gameScreen" class="game-screen">
-        <div class="game-controls">
-            <div class="control-group">
-                <label>Bet Amount (€)</label>
-                <input type="number" id="betAmount" min="0.5" max="10" step="0.5" value="1.0">
-            </div>
-            <div class="control-group">
-                <label>Number of Balls</label>
-                <div class="ball-selector">
-                    <div class="ball-option active" onclick="selectBalls(1)">1</div>
-                    <div class="ball-option" onclick="selectBalls(2)">2</div>
-                    <div class="ball-option" onclick="selectBalls(3)">3</div>
-                    <div class="ball-option" onclick="selectBalls(4)">4</div>
-                    <div class="ball-option" onclick="selectBalls(5)">5</div>
+    <div class="grow-area">
+        <h2 style="text-align: center; margin-bottom: 10px;">🪴 Grow Area</h2>
+        <div class="plant-grid" id="plantGrid"></div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn" id="plantBtn">🌱 Plant ($<span id="plantCost">10</span>)</button>
+        <button class="btn harvest" id="harvestBtn">✂️ Harvest All</button>
+        <button class="btn shop" id="shopBtn">🛒 Shop</button>
+        <button class="btn" id="referralBtn">👥 Referrals</button>
+    </div>
+</div>
+
+<!-- Shop Modal -->
+<div class="modal" id="shopModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>🛒 Upgrades Shop</h2>
+            <button class="close-btn" onclick="closeModal('shopModal')">×</button>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('upgrades')">Upgrades</button>
+            <button class="tab" onclick="switchTab('premium')">⭐ Premium</button>
+        </div>
+        <div class="tab-content active" id="upgrades">
+            <div id="upgradesList"></div>
+        </div>
+        <div class="tab-content" id="premium">
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <h3>⚡ Auto-Harvest</h3>
+                    <p>Automatically harvest ready plants</p>
                 </div>
+                <button class="buy-btn" onclick="buyPremium('autoHarvest', 50)">⭐ 50 Stars</button>
             </div>
-            <button class="drop-btn" onclick="dropBalls()" id="dropBtn">Drop Balls</button>
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <h3>💎 Double Earnings</h3>
+                    <p>Earn 2x money from harvests</p>
+                </div>
+                <button class="buy-btn" onclick="buyPremium('doubleEarnings', 100)">⭐ 100 Stars</button>
+            </div>
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <h3>🚀 Instant Growth</h3>
+                    <p>Plants grow 10x faster</p>
+                </div>
+                <button class="buy-btn" onclick="buyPremium('instantGrowth', 150)">⭐ 150 Stars</button>
+            </div>
         </div>
-
-        <div class="plinko-board" id="plinkoBoard">
-            <canvas id="plinkoCanvas" width="460" height="360"></canvas>
-        </div>
-
-        <div class="multipliers">
-            <div class="multiplier high">10x</div>
-            <div class="multiplier medium">5x</div>
-            <div class="multiplier medium">3x</div>
-            <div class="multiplier low">2x</div>
-            <div class="multiplier low">1.5x</div>
-            <div class="multiplier low">1x</div>
-            <div class="multiplier low">1.5x</div>
-            <div class="multiplier low">2x</div>
-            <div class="multiplier medium">3x</div>
-            <div class="multiplier medium">5x</div>
-            <div class="multiplier high">10x</div>
-        </div>
-
-        <div class="result-message" id="resultMessage"></div>
-
-        <button class="back-btn" onclick="showMenu()">← Back to Menu</button>
     </div>
+</div>
 
-    <div id="adScreen" class="ad-screen">
-        <div class="ad-container">
-            <h2>📺 Watch Advertisement</h2>
-            <p>Watch the ad to earn €0.50</p>
-            <div class="ad-timer" id="adTimer">5</div>
-            <p>Please wait...</p>
+<!-- Referral Modal -->
+<div class="modal" id="referralModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>👥 Referral System</h2>
+            <button class="close-btn" onclick="closeModal('referralModal')">×</button>
         </div>
-        <button class="watch-ad-btn" onclick="startAd()" id="watchAdBtn">Start Watching</button>
-        <button class="back-btn" onclick="showMenu()" style="margin-top: 15px;">← Back to Menu</button>
+        <div class="referral-section">
+            <h3>Your Referral Link:</h3>
+            <div class="referral-link" id="referralLink">Loading...</div>
+            <button class="btn" onclick="shareReferral()">📤 Share Link</button>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                💰 Earn $500 for each friend who joins!<br>
+                🎁 Your friend gets $200 bonus too!
+            </p>
+            <div style="margin-top: 15px;">
+                <strong>Total Referrals: <span id="refCount">0</span></strong><br>
+                <strong>Bonus Earned: $<span id="refBonus">0</span></strong>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    let balance = 10.0;
-    let selectedBalls = 1;
-    let isPlaying = false;
-    const multipliers = [10, 5, 3, 2, 1.5, 1, 1.5, 2, 3, 5, 10];
+    // Initialize Telegram WebApp
+    let tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.expand();
+        tg.ready();
+    }
 
-    const canvas = document.getElementById('plinkoCanvas');
-    const ctx = canvas.getContext('2d');
-    const pegs = [];
-    const rows = 8;
-    const pegSpacing = 50;
+    // Game State
+    let gameState = {
+        money: 0,
+        level: 1,
+        totalHarvest: 0,
+        plants: [],
+        maxPlants: 6,
+        plantCost: 10,
+        plantValue: 20,
+        growthTime: 10000, // 10 seconds
+        referrals: 0,
+        referralBonus: 0,
+        userId: null,
+        referredBy: null,
+        premium: {
+            autoHarvest: false,
+            doubleEarnings: false,
+            instantGrowth: false
+        },
+        upgrades: {
+            fasterGrowth: 0,
+            morePlants: 0,
+            betterValue: 0,
+            cheaperPlanting: 0
+        }
+    };
 
-    // Initialize pegs
-    function initPegs() {
-        for (let row = 0; row < rows; row++) {
-            for (let col = 0; col <= row; col++) {
-                const x = canvas.width / 2 - (row * pegSpacing) / 2 + col * pegSpacing;
-                const y = 40 + row * 40;
-                pegs.push({ x, y });
-                drawPeg(x, y);
+    const upgrades = [
+        {
+            id: 'fasterGrowth',
+            name: '⏱️ Faster Growth',
+            desc: 'Reduce growth time by 10%',
+            baseCost: 100,
+            maxLevel: 10
+        },
+        {
+            id: 'morePlants',
+            name: '🪴 More Slots',
+            desc: 'Add 3 more plant slots',
+            baseCost: 500,
+            maxLevel: 3
+        },
+        {
+            id: 'betterValue',
+            name: '💵 Better Value',
+            desc: 'Increase harvest value by 20%',
+            baseCost: 200,
+            maxLevel: 10
+        },
+        {
+            id: 'cheaperPlanting',
+            name: '💰 Cheaper Planting',
+            desc: 'Reduce planting cost by 10%',
+            baseCost: 150,
+            maxLevel: 5
+        }
+    ];
+
+    // Sound Effects
+    function playSound(type) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        switch(type) {
+            case 'plant':
+                oscillator.frequency.value = 400;
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.2);
+                break;
+            case 'harvest':
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.3);
+                break;
+            case 'coin':
+                oscillator.frequency.value = 1200;
+                gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.15);
+                break;
+            case 'purchase':
+                oscillator.frequency.value = 600;
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.25);
+                break;
+        }
+    }
+
+    // Initialize
+    function init() {
+        // Get user ID from Telegram
+        if (tg?.initDataUnsafe?.user) {
+            gameState.userId = tg.initDataUnsafe.user.id.toString();
+        } else {
+            gameState.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Check for referral
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        
+        loadGame();
+        
+        if (ref && !gameState.referredBy && ref !== gameState.userId) {
+            gameState.referredBy = ref;
+            gameState.money += 200; // New user bonus
+            saveGame();
+            showCoinAnimation(200);
+            
+            // Award referrer (stored locally, they'll see it when they open)
+            const referrerData = localStorage.getItem('game_' + ref);
+            if (referrerData) {
+                const referrer = JSON.parse(referrerData);
+                referrer.referrals += 1;
+                referrer.referralBonus += 500;
+                referrer.money += 500;
+                localStorage.setItem('game_' + ref, JSON.stringify(referrer));
+            }
+        }
+
+        renderPlants();
+        updateUI();
+        startGameLoop();
+    }
+
+    function loadGame() {
+        const saved = localStorage.getItem('game_' + gameState.userId);
+        if (saved) {
+            const loaded = JSON.parse(saved);
+            Object.assign(gameState, loaded);
+        }
+    }
+
+    function saveGame() {
+        localStorage.setItem('game_' + gameState.userId, JSON.stringify(gameState));
+    }
+
+    function renderPlants() {
+        const grid = document.getElementById('plantGrid');
+        grid.innerHTML = '';
+        
+        const totalSlots = gameState.maxPlants + (gameState.upgrades.morePlants * 3);
+        
+        for (let i = 0; i < totalSlots; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'plant-slot';
+            slot.dataset.index = i;
+            
+            if (gameState.plants[i]) {
+                const plant = gameState.plants[i];
+                const progress = Math.min(100, ((Date.now() - plant.plantedAt) / plant.growthTime) * 100);
+                
+                if (progress >= 100) {
+                    slot.className += ' ready';
+                    slot.innerHTML = '🌿';
+                    slot.onclick = () => harvestPlant(i);
+                } else {
+                    slot.className += ' growing';
+                    slot.innerHTML = '🌱';
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'plant-progress';
+                    progressBar.innerHTML = `<div class="plant-progress-bar" style="width: ${progress}%"></div>`;
+                    slot.appendChild(progressBar);
+                }
+            } else {
+                slot.innerHTML = '➕';
+                slot.onclick = () => plantSeed(i);
+            }
+            
+            grid.appendChild(slot);
+        }
+    }
+
+    function plantSeed(index) {
+        const cost = gameState.plantCost * (1 - gameState.upgrades.cheaperPlanting * 0.1);
+        
+        if (gameState.money >= cost && !gameState.plants[index]) {
+            gameState.money -= cost;
+            const growthTime = gameState.growthTime * (1 - gameState.upgrades.fasterGrowth * 0.1);
+            const finalGrowthTime = gameState.premium.instantGrowth ? growthTime / 10 : growthTime;
+            
+            gameState.plants[index] = {
+                plantedAt: Date.now(),
+                growthTime: finalGrowthTime
+            };
+            
+            playSound('plant');
+            saveGame();
+            renderPlants();
+            updateUI();
+        }
+    }
+
+    function harvestPlant(index) {
+        if (gameState.plants[index]) {
+            const plant = gameState.plants[index];
+            const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
+            
+            if (progress >= 1) {
+                let value = gameState.plantValue * (1 + gameState.upgrades.betterValue * 0.2);
+                if (gameState.premium.doubleEarnings) value *= 2;
+                
+                gameState.money += value;
+                gameState.totalHarvest += 1;
+                gameState.plants[index] = null;
+                
+                playSound('harvest');
+                showCoinAnimation(value);
+                
+                // Level up
+                const newLevel = Math.floor(gameState.totalHarvest / 10) + 1;
+                if (newLevel > gameState.level) {
+                    gameState.level = newLevel;
+                    showNotification('🎉 Level Up! Level ' + newLevel);
+                }
+                
+                saveGame();
+                renderPlants();
+                updateUI();
             }
         }
     }
 
-    function drawPeg(x, y) {
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        const gradient = ctx.createRadialGradient(x - 2, y - 2, 0, x, y, 4);
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(1, '#95a5a6');
-        ctx.fillStyle = gradient;
-        ctx.fill();
-        ctx.strokeStyle = '#7f8c8d';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-
-    function updateBalance() {
-        document.getElementById('balance').textContent = balance.toFixed(2);
-    }
-
-    function showGame() {
-        document.getElementById('mainMenu').style.display = 'none';
-        document.getElementById('gameScreen').classList.add('active');
-        if (pegs.length === 0) {
-            initPegs();
-        }
-    }
-
-    function showMenu() {
-        document.getElementById('mainMenu').style.display = 'flex';
-        document.getElementById('gameScreen').classList.remove('active');
-        document.getElementById('adScreen').classList.remove('active');
-        document.getElementById('resultMessage').classList.remove('show');
-    }
-
-    function showAds() {
-        document.getElementById('mainMenu').style.display = 'none';
-        document.getElementById('adScreen').classList.add('active');
-    }
-
-    function selectBalls(num) {
-        selectedBalls = num;
-        document.querySelectorAll('.ball-option').forEach((el, idx) => {
-            el.classList.toggle('active', idx + 1 === num);
-        });
-    }
-
-    function dropBalls() {
-        if (isPlaying) return;
-
-        const betAmount = parseFloat(document.getElementById('betAmount').value);
-        const totalBet = betAmount * selectedBalls;
-
-        if (totalBet > balance) {
-            alert('Insufficient balance!');
-            return;
-        }
-
-        if (betAmount < 0.5) {
-            alert('Minimum bet is €0.50');
-            return;
-        }
-
-        balance -= totalBet;
-        updateBalance();
-        isPlaying = true;
-        document.getElementById('dropBtn').disabled = true;
-        document.getElementById('resultMessage').classList.remove('show');
-
-        let totalWin = 0;
-        let ballsDropped = 0;
-
-        for (let i = 0; i < selectedBalls; i++) {
-            setTimeout(() => {
-                const multiplierIndex = simulateDrop();
-                const multiplier = multipliers[multiplierIndex];
-                const winAmount = betAmount * multiplier;
-                totalWin += winAmount;
-                ballsDropped++;
-
-                if (ballsDropped === selectedBalls) {
-                    balance += totalWin;
-                    updateBalance();
-                    showResult(totalWin, totalBet);
-                    isPlaying = false;
-                    document.getElementById('dropBtn').disabled = false;
+    function harvestAll() {
+        let harvested = 0;
+        gameState.plants.forEach((plant, index) => {
+            if (plant) {
+                const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
+                if (progress >= 1) {
+                    harvestPlant(index);
+                    harvested++;
                 }
-            }, i * 1000);
+            }
+        });
+        
+        if (harvested === 0) {
+            showNotification('No plants ready to harvest!');
         }
     }
 
-    function simulateDrop() {
-        let position = 5; // Start from middle
+    function updateUI() {
+        document.getElementById('money').textContent = '$' + Math.floor(gameState.money);
+        document.getElementById('level').textContent = gameState.level;
+        document.getElementById('totalHarvest').textContent = gameState.totalHarvest;
+        document.getElementById('referrals').textContent = gameState.referrals;
+        document.getElementById('plantCost').textContent = Math.floor(gameState.plantCost * (1 - gameState.upgrades.cheaperPlanting * 0.1));
         
-        for (let row = 0; row < rows; row++) {
-            const direction = Math.random() < 0.5 ? -1 : 1;
-            position += direction * 0.5;
-        }
-
-        position = Math.max(0, Math.min(10, Math.round(position)));
-        return position;
+        // Update referral modal
+        document.getElementById('refCount').textContent = gameState.referrals;
+        document.getElementById('refBonus').textContent = gameState.referralBonus;
     }
 
-    function showResult(winAmount, betAmount) {
-        const resultMsg = document.getElementById('resultMessage');
-        const profit = winAmount - betAmount;
+    function showCoinAnimation(amount) {
+        const coin = document.createElement('div');
+        coin.className = 'coin-float';
+        coin.textContent = '+$' + Math.floor(amount);
+        coin.style.left = (window.innerWidth / 2) + 'px';
+        coin.style.top = (window.innerHeight / 2) + 'px';
+        document.body.appendChild(coin);
         
-        if (profit > 0) {
-            resultMsg.textContent = `🎉 You Won €${winAmount.toFixed(2)}! (Profit: €${profit.toFixed(2)})`;
-            resultMsg.className = 'result-message show win';
-        } else if (profit < 0) {
-            resultMsg.textContent = `😔 You Lost €${Math.abs(profit).toFixed(2)}`;
-            resultMsg.className = 'result-message show lose';
+        playSound('coin');
+        
+        setTimeout(() => coin.remove(), 1000);
+    }
+
+    function showNotification(text) {
+        if (tg) {
+            tg.showAlert(text);
         } else {
-            resultMsg.textContent = `Break Even! €${winAmount.toFixed(2)}`;
-            resultMsg.className = 'result-message show win';
+            alert(text);
         }
     }
 
-    function startAd() {
-        const btn = document.getElementById('watchAdBtn');
-        const timer = document.getElementById('adTimer');
-        btn.disabled = true;
-        
-        let timeLeft = 5;
-        timer.textContent = timeLeft;
-
-        const interval = setInterval(() => {
-            timeLeft--;
-            timer.textContent = timeLeft;
-
-            if (timeLeft <= 0) {
-                clearInterval(interval);
-                balance += 0.5;
-                updateBalance();
-                alert('🎉 You earned €0.50!');
-                timer.textContent = '5';
-                btn.disabled = false;
+    function startGameLoop() {
+        setInterval(() => {
+            renderPlants();
+            
+            // Auto-harvest if premium
+            if (gameState.premium.autoHarvest) {
+                gameState.plants.forEach((plant, index) => {
+                    if (plant) {
+                        const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
+                        if (progress >= 1) {
+                            harvestPlant(index);
+                        }
+                    }
+                });
             }
         }, 1000);
     }
 
-    // Initialize
-    updateBalance();
+    // Shop
+    function openShop() {
+        document.getElementById('shopModal').classList.add('active');
+        renderUpgrades();
+    }
+
+    function renderUpgrades() {
+        const list = document.getElementById('upgradesList');
+        list.innerHTML = '';
+        
+        upgrades.forEach(upgrade => {
+            const level = gameState.upgrades[upgrade.id];
+            const cost = upgrade.baseCost * Math.pow(2, level);
+            const canBuy = gameState.money >= cost && level < upgrade.maxLevel;
+            
+            const item = document.createElement('div');
+            item.className = 'upgrade-item';
+            item.innerHTML = `
+                <div class="upgrade-info">
+                    <h3>${upgrade.name} (${level}/${upgrade.maxLevel})</h3>
+                    <p>${upgrade.desc}</p>
+                </div>
+                <button class="buy-btn" ${!canBuy ? 'disabled' : ''} onclick="buyUpgrade('${upgrade.id}', ${cost})">
+                    $${cost}
+                </button>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function buyUpgrade(id, cost) {
+        const upgrade = upgrades.find(u => u.id === id);
+        if (gameState.money >= cost && gameState.upgrades[id] < upgrade.maxLevel) {
+            gameState.money -= cost;
+            gameState.upgrades[id]++;
+            playSound('purchase');
+            saveGame();
+            updateUI();
+            renderUpgrades();
+            renderPlants();
+        }
+    }
+
+    function buyPremium(feature, stars) {
+        if (tg && tg.openInvoice) {
+            showNotification('Premium features use Telegram Stars. This is a demo - connect to a real payment provider.');
+            // In production, you'd create an invoice via your bot
+            // tg.openInvoice(invoiceUrl, (status) => { ... });
+        } else {
+            // Demo mode - just unlock
+            gameState.premium[feature] = true;
+            saveGame();
+            showNotification('Premium feature unlocked! (Demo mode)');
+        }
+    }
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        event.target.classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    // Referral
+    function openReferral() {
+        document.getElementById('referralModal').classList.add('active');
+        const baseUrl = window.location.href.split('?')[0];
+        const refLink = `${baseUrl}?ref=${gameState.userId}`;
+        document.getElementById('referralLink').textContent = refLink;
+    }
+
+    function shareReferral() {
+        const baseUrl = window.location.href.split('?')[0];
+        const refLink = `${baseUrl}?ref=${gameState.userId}`;
+        const text = `🌿 Join me in Cannabis Tycoon! Grow plants and earn money! 💰\n\nGet $200 bonus when you start: ${refLink}`;
+        
+        if (tg) {
+            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(text)}`);
+        } else {
+            navigator.clipboard.writeText(refLink);
+            showNotification('Link copied to clipboard!');
+        }
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    // Event Listeners
+    document.getElementById('plantBtn').onclick = () => {
+        const emptySlot = gameState.plants.findIndex(p => !p);
+        if (emptySlot !== -1) {
+            plantSeed(emptySlot);
+        } else {
+            showNotification('No empty slots! Harvest plants or buy more slots.');
+        }
+    };
+
+    document.getElementById('harvestBtn').onclick = harvestAll;
+    document.getElementById('shopBtn').onclick = openShop;
+    document.getElementById('referralBtn').onclick = openReferral;
+
+    // Start game
+    init();
 </script>
 ```
 
