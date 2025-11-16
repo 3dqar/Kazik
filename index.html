@@ -1,862 +1,417 @@
 <!DOCTYPE html>
 
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cannabis Tycoon 🌿</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Tycoon</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
 ```
     body {
-        font-family: 'Comic Sans MS', cursive, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
         color: #fff;
-        overflow-x: hidden;
         min-height: 100vh;
-        padding-bottom: 20px;
+        padding: 20px;
     }
 
     .container {
-        max-width: 500px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 10px;
     }
 
-    .header {
+    header {
         text-align: center;
+        margin-bottom: 30px;
         padding: 20px;
-        background: rgba(0,0,0,0.3);
-        border-radius: 20px;
-        margin-bottom: 20px;
-        animation: slideDown 0.5s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
     }
 
-    .header h1 {
-        font-size: 2em;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        color: #4caf50;
     }
 
     .stats {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
     }
 
-    .stat-box {
-        background: rgba(255,255,255,0.2);
-        padding: 15px;
-        border-radius: 15px;
-        text-align: center;
+    .stat-card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 20px;
+        border-radius: 12px;
         backdrop-filter: blur(10px);
-        animation: fadeIn 0.5s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
     }
 
-    .stat-value {
-        font-size: 1.8em;
-        font-weight: bold;
-        color: #ffd700;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    .stat-card:hover {
+        transform: translateY(-5px);
     }
 
     .stat-label {
         font-size: 0.9em;
-        opacity: 0.9;
-    }
-
-    .grow-area {
-        background: rgba(0,0,0,0.4);
-        border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 20px;
-        min-height: 250px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .plant-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .plant-slot {
-        aspect-ratio: 1;
-        background: rgba(139, 69, 19, 0.5);
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3em;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 3px solid rgba(255,255,255,0.2);
-        position: relative;
-    }
-
-    .plant-slot:active {
-        transform: scale(0.95);
-    }
-
-    .plant-slot.growing {
-        animation: pulse 2s infinite;
-    }
-
-    .plant-slot.ready {
-        animation: bounce 1s infinite;
-        border-color: #00ff00;
-        box-shadow: 0 0 20px rgba(0,255,0,0.5);
-    }
-
-    .plant-progress {
-        position: absolute;
-        bottom: 5px;
-        left: 5px;
-        right: 5px;
-        height: 5px;
-        background: rgba(0,0,0,0.5);
-        border-radius: 3px;
-        overflow: hidden;
-    }
-
-    .plant-progress-bar {
-        height: 100%;
-        background: linear-gradient(90deg, #00ff00, #00aa00);
-        transition: width 0.3s ease;
-    }
-
-    .action-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        padding: 15px;
-        border-radius: 15px;
-        color: white;
-        font-size: 1.1em;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    .btn:active {
-        transform: scale(0.95);
-    }
-
-    .btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .btn.harvest {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    }
-
-    .btn.shop {
-        background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.8);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        animation: fadeIn 0.3s ease;
-    }
-
-    .modal.active {
-        display: flex;
-    }
-
-    .modal-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 20px;
-        border-radius: 20px;
-        max-width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-        animation: slideUp 0.3s ease;
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .close-btn {
-        background: rgba(255,255,255,0.2);
-        border: none;
-        color: white;
-        font-size: 1.5em;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .upgrade-item {
-        background: rgba(0,0,0,0.3);
-        padding: 15px;
-        border-radius: 15px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .upgrade-info h3 {
+        opacity: 0.8;
         margin-bottom: 5px;
     }
 
-    .upgrade-info p {
+    .stat-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4caf50;
+    }
+
+    .shop {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 25px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-size: 1.8em;
+    }
+
+    .items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .item {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid rgba(76, 175, 80, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .item:hover {
+        border-color: #4caf50;
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    }
+
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .item-name {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .item-owned {
+        background: #4caf50;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9em;
+    }
+
+    .item-desc {
         font-size: 0.9em;
         opacity: 0.8;
+        margin-bottom: 15px;
+        line-height: 1.4;
     }
 
-    .buy-btn {
-        background: #00ff00;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-weight: bold;
-        cursor: pointer;
+    .item-stats {
+        margin-bottom: 15px;
     }
 
-    .buy-btn:disabled {
-        background: #666;
-        color: #999;
-    }
-
-    .referral-section {
-        background: rgba(0,0,0,0.3);
-        padding: 20px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-    }
-
-    .referral-link {
-        background: rgba(255,255,255,0.1);
-        padding: 10px;
-        border-radius: 10px;
-        word-break: break-all;
-        margin: 10px 0;
+    .item-stat {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
         font-size: 0.9em;
     }
 
-    .coin-float {
-        position: fixed;
-        font-size: 2em;
-        pointer-events: none;
-        animation: floatUp 1s ease forwards;
-        z-index: 999;
+    button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+    button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
     }
 
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
+    button:active:not(:disabled) {
+        transform: translateY(0px);
+    }
+
+    button:disabled {
+        background: #666;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .upgrades {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 25px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
     }
 
-    @keyframes slideDown {
-        from { transform: translateY(-50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes slideUp {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    @keyframes floatUp {
-        to {
-            transform: translateY(-100px);
-            opacity: 0;
-        }
-    }
-
-    .tabs {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .tab {
-        flex: 1;
-        padding: 10px;
-        background: rgba(255,255,255,0.2);
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .tab.active {
-        background: rgba(255,255,255,0.4);
-    }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
+    .leaf {
+        position: fixed;
+        font-size: 2em;
+        opacity: 0.3;
+        animation: float 3s ease-in-out infinite;
+        pointer-events: none;
     }
 </style>
 ```
 
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🌿 Cannabis Tycoon 🌿</h1>
-            <p>Grow • Harvest • Profit</p>
-        </div>
+    <div class="leaf" style="top: 10%; left: 5%;">🍃</div>
+    <div class="leaf" style="top: 20%; right: 10%; animation-delay: 1s;">🍃</div>
+    <div class="leaf" style="bottom: 15%; left: 15%; animation-delay: 2s;">🍃</div>
+    <div class="leaf" style="bottom: 25%; right: 5%; animation-delay: 1.5s;">🍃</div>
 
 ```
+<div class="container">
+    <header>
+        <h1>🌿 Cannabis Tycoon 🌿</h1>
+        <p>Build your cannabis empire!</p>
+    </header>
+
     <div class="stats">
-        <div class="stat-box">
+        <div class="stat-card">
+            <div class="stat-label">💰 Cash</div>
             <div class="stat-value" id="money">$0</div>
-            <div class="stat-label">💰 Money</div>
         </div>
-        <div class="stat-box">
-            <div class="stat-value" id="level">1</div>
-            <div class="stat-label">⭐ Level</div>
+        <div class="stat-card">
+            <div class="stat-label">🌱 Per Second</div>
+            <div class="stat-value" id="perSecond">$0</div>
         </div>
-        <div class="stat-box">
-            <div class="stat-value" id="totalHarvest">0</div>
-            <div class="stat-label">🌿 Total Harvest</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-value" id="referrals">0</div>
-            <div class="stat-label">👥 Referrals</div>
+        <div class="stat-card">
+            <div class="stat-label">📊 Total Earned</div>
+            <div class="stat-value" id="totalEarned">$0</div>
         </div>
     </div>
 
-    <div class="grow-area">
-        <h2 style="text-align: center; margin-bottom: 10px;">🪴 Grow Area</h2>
-        <div class="plant-grid" id="plantGrid"></div>
+    <div class="shop">
+        <h2>🏪 Growers</h2>
+        <div class="items" id="growers"></div>
     </div>
 
-    <div class="action-buttons">
-        <button class="btn" id="plantBtn">🌱 Plant ($<span id="plantCost">10</span>)</button>
-        <button class="btn harvest" id="harvestBtn">✂️ Harvest All</button>
-        <button class="btn shop" id="shopBtn">🛒 Shop</button>
-        <button class="btn" id="referralBtn">👥 Referrals</button>
-    </div>
-</div>
-
-<!-- Shop Modal -->
-<div class="modal" id="shopModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>🛒 Upgrades Shop</h2>
-            <button class="close-btn" onclick="closeModal('shopModal')">×</button>
-        </div>
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('upgrades')">Upgrades</button>
-            <button class="tab" onclick="switchTab('premium')">⭐ Premium</button>
-        </div>
-        <div class="tab-content active" id="upgrades">
-            <div id="upgradesList"></div>
-        </div>
-        <div class="tab-content" id="premium">
-            <div class="upgrade-item">
-                <div class="upgrade-info">
-                    <h3>⚡ Auto-Harvest</h3>
-                    <p>Automatically harvest ready plants</p>
-                </div>
-                <button class="buy-btn" onclick="buyPremium('autoHarvest', 50)">⭐ 50 Stars</button>
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info">
-                    <h3>💎 Double Earnings</h3>
-                    <p>Earn 2x money from harvests</p>
-                </div>
-                <button class="buy-btn" onclick="buyPremium('doubleEarnings', 100)">⭐ 100 Stars</button>
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info">
-                    <h3>🚀 Instant Growth</h3>
-                    <p>Plants grow 10x faster</p>
-                </div>
-                <button class="buy-btn" onclick="buyPremium('instantGrowth', 150)">⭐ 150 Stars</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Referral Modal -->
-<div class="modal" id="referralModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>👥 Referral System</h2>
-            <button class="close-btn" onclick="closeModal('referralModal')">×</button>
-        </div>
-        <div class="referral-section">
-            <h3>Your Referral Link:</h3>
-            <div class="referral-link" id="referralLink">Loading...</div>
-            <button class="btn" onclick="shareReferral()">📤 Share Link</button>
-            <p style="margin-top: 15px; font-size: 0.9em;">
-                💰 Earn $500 for each friend who joins!<br>
-                🎁 Your friend gets $200 bonus too!
-            </p>
-            <div style="margin-top: 15px;">
-                <strong>Total Referrals: <span id="refCount">0</span></strong><br>
-                <strong>Bonus Earned: $<span id="refBonus">0</span></strong>
-            </div>
-        </div>
+    <div class="upgrades">
+        <h2>⚡ Upgrades</h2>
+        <div class="items" id="upgrades"></div>
     </div>
 </div>
 
 <script>
-    // Initialize Telegram WebApp
-    let tg = window.Telegram?.WebApp;
-    if (tg) {
-        tg.expand();
-        tg.ready();
-    }
-
-    // Game State
-    let gameState = {
-        money: 0,
-        level: 1,
-        totalHarvest: 0,
-        plants: [],
-        maxPlants: 6,
-        plantCost: 10,
-        plantValue: 20,
-        growthTime: 10000, // 10 seconds
-        referrals: 0,
-        referralBonus: 0,
-        userId: null,
-        referredBy: null,
-        premium: {
-            autoHarvest: false,
-            doubleEarnings: false,
-            instantGrowth: false
-        },
-        upgrades: {
-            fasterGrowth: 0,
-            morePlants: 0,
-            betterValue: 0,
-            cheaperPlanting: 0
-        }
+    const gameState = {
+        money: 50,
+        totalEarned: 0,
+        growers: [
+            { id: 'pot', name: 'Pot Plant', cost: 10, owned: 0, production: 1, desc: 'A small pot plant producing steady income' },
+            { id: 'greenhouse', name: 'Greenhouse', cost: 100, owned: 0, production: 10, desc: 'Automated greenhouse with better yields' },
+            { id: 'farm', name: 'Indoor Farm', cost: 1000, owned: 0, production: 80, desc: 'Professional indoor farming operation' },
+            { id: 'facility', name: 'Growing Facility', cost: 10000, owned: 0, production: 500, desc: 'Large scale commercial facility' },
+            { id: 'lab', name: 'Bio Lab', cost: 100000, owned: 0, production: 3000, desc: 'Advanced genetic research and cultivation' },
+            { id: 'empire', name: 'Cannabis Empire', cost: 1000000, owned: 0, production: 20000, desc: 'Multi-state cultivation empire' }
+        ],
+        upgrades: [
+            { id: 'fert1', name: 'Better Nutrients', cost: 500, bought: false, multiplier: 2, desc: 'Double production of all growers' },
+            { id: 'lights1', name: 'LED Lights', cost: 2000, bought: false, multiplier: 2, desc: 'Double production of all growers' },
+            { id: 'auto1', name: 'Automation', cost: 10000, bought: false, multiplier: 2, desc: 'Double production of all growers' },
+            { id: 'genetics1', name: 'Superior Genetics', cost: 50000, bought: false, multiplier: 2, desc: 'Double production of all growers' },
+            { id: 'tech1', name: 'AI Optimization', cost: 250000, bought: false, multiplier: 3, desc: 'Triple production of all growers' }
+        ]
     };
 
-    const upgrades = [
-        {
-            id: 'fasterGrowth',
-            name: '⏱️ Faster Growth',
-            desc: 'Reduce growth time by 10%',
-            baseCost: 100,
-            maxLevel: 10
-        },
-        {
-            id: 'morePlants',
-            name: '🪴 More Slots',
-            desc: 'Add 3 more plant slots',
-            baseCost: 500,
-            maxLevel: 3
-        },
-        {
-            id: 'betterValue',
-            name: '💵 Better Value',
-            desc: 'Increase harvest value by 20%',
-            baseCost: 200,
-            maxLevel: 10
-        },
-        {
-            id: 'cheaperPlanting',
-            name: '💰 Cheaper Planting',
-            desc: 'Reduce planting cost by 10%',
-            baseCost: 150,
-            maxLevel: 5
-        }
-    ];
+    let uiElements = {};
 
-    // Sound Effects
-    function playSound(type) {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        
-        switch(type) {
-            case 'plant':
-                oscillator.frequency.value = 400;
-                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-                oscillator.start(ctx.currentTime);
-                oscillator.stop(ctx.currentTime + 0.2);
-                break;
-            case 'harvest':
-                oscillator.frequency.value = 800;
-                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                oscillator.start(ctx.currentTime);
-                oscillator.stop(ctx.currentTime + 0.3);
-                break;
-            case 'coin':
-                oscillator.frequency.value = 1200;
-                gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                oscillator.start(ctx.currentTime);
-                oscillator.stop(ctx.currentTime + 0.15);
-                break;
-            case 'purchase':
-                oscillator.frequency.value = 600;
-                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-                oscillator.start(ctx.currentTime);
-                oscillator.stop(ctx.currentTime + 0.25);
-                break;
-        }
+    function formatMoney(num) {
+        if (num >= 1000000) return '$' + (num / 1000000).toFixed(2) + 'M';
+        if (num >= 1000) return '$' + (num / 1000).toFixed(2) + 'K';
+        return '$' + num.toFixed(0);
     }
 
-    // Initialize
-    function init() {
-        // Get user ID from Telegram
-        if (tg?.initDataUnsafe?.user) {
-            gameState.userId = tg.initDataUnsafe.user.id.toString();
-        } else {
-            gameState.userId = 'user_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        // Check for referral
-        const urlParams = new URLSearchParams(window.location.search);
-        const ref = urlParams.get('ref');
+    function calculateProduction() {
+        let total = 0;
+        let multiplier = 1;
         
-        loadGame();
+        gameState.upgrades.forEach(u => {
+            if (u.bought) multiplier *= u.multiplier;
+        });
         
-        if (ref && !gameState.referredBy && ref !== gameState.userId) {
-            gameState.referredBy = ref;
-            gameState.money += 200; // New user bonus
-            saveGame();
-            showCoinAnimation(200);
-            
-            // Award referrer (stored locally, they'll see it when they open)
-            const referrerData = localStorage.getItem('game_' + ref);
-            if (referrerData) {
-                const referrer = JSON.parse(referrerData);
-                referrer.referrals += 1;
-                referrer.referralBonus += 500;
-                referrer.money += 500;
-                localStorage.setItem('game_' + ref, JSON.stringify(referrer));
-            }
-        }
-
-        renderPlants();
-        updateUI();
-        startGameLoop();
+        gameState.growers.forEach(g => {
+            total += g.owned * g.production * multiplier;
+        });
+        
+        return total;
     }
 
-    function loadGame() {
-        const saved = localStorage.getItem('game_' + gameState.userId);
-        if (saved) {
-            const loaded = JSON.parse(saved);
-            Object.assign(gameState, loaded);
-        }
-    }
-
-    function saveGame() {
-        localStorage.setItem('game_' + gameState.userId, JSON.stringify(gameState));
-    }
-
-    function renderPlants() {
-        const grid = document.getElementById('plantGrid');
-        grid.innerHTML = '';
-        
-        const totalSlots = gameState.maxPlants + (gameState.upgrades.morePlants * 3);
-        
-        for (let i = 0; i < totalSlots; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'plant-slot';
-            slot.dataset.index = i;
-            
-            if (gameState.plants[i]) {
-                const plant = gameState.plants[i];
-                const progress = Math.min(100, ((Date.now() - plant.plantedAt) / plant.growthTime) * 100);
-                
-                if (progress >= 100) {
-                    slot.className += ' ready';
-                    slot.innerHTML = '🌿';
-                    slot.onclick = () => harvestPlant(i);
-                } else {
-                    slot.className += ' growing';
-                    slot.innerHTML = '🌱';
-                    const progressBar = document.createElement('div');
-                    progressBar.className = 'plant-progress';
-                    progressBar.innerHTML = `<div class="plant-progress-bar" style="width: ${progress}%"></div>`;
-                    slot.appendChild(progressBar);
-                }
-            } else {
-                slot.innerHTML = '➕';
-                slot.onclick = () => plantSeed(i);
-            }
-            
-            grid.appendChild(slot);
-        }
-    }
-
-    function plantSeed(index) {
-        const cost = gameState.plantCost * (1 - gameState.upgrades.cheaperPlanting * 0.1);
-        
-        if (gameState.money >= cost && !gameState.plants[index]) {
-            gameState.money -= cost;
-            const growthTime = gameState.growthTime * (1 - gameState.upgrades.fasterGrowth * 0.1);
-            const finalGrowthTime = gameState.premium.instantGrowth ? growthTime / 10 : growthTime;
-            
-            gameState.plants[index] = {
-                plantedAt: Date.now(),
-                growthTime: finalGrowthTime
-            };
-            
-            playSound('plant');
-            saveGame();
-            renderPlants();
+    function buyGrower(id) {
+        const grower = gameState.growers.find(g => g.id === id);
+        if (gameState.money >= grower.cost) {
+            gameState.money -= grower.cost;
+            grower.owned++;
+            grower.cost = Math.floor(grower.cost * 1.15);
             updateUI();
         }
     }
 
-    function harvestPlant(index) {
-        if (gameState.plants[index]) {
-            const plant = gameState.plants[index];
-            const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
-            
-            if (progress >= 1) {
-                let value = gameState.plantValue * (1 + gameState.upgrades.betterValue * 0.2);
-                if (gameState.premium.doubleEarnings) value *= 2;
-                
-                gameState.money += value;
-                gameState.totalHarvest += 1;
-                gameState.plants[index] = null;
-                
-                playSound('harvest');
-                showCoinAnimation(value);
-                
-                // Level up
-                const newLevel = Math.floor(gameState.totalHarvest / 10) + 1;
-                if (newLevel > gameState.level) {
-                    gameState.level = newLevel;
-                    showNotification('🎉 Level Up! Level ' + newLevel);
-                }
-                
-                saveGame();
-                renderPlants();
-                updateUI();
-            }
+    function buyUpgrade(id) {
+        const upgrade = gameState.upgrades.find(u => u.id === id);
+        if (!upgrade.bought && gameState.money >= upgrade.cost) {
+            gameState.money -= upgrade.cost;
+            upgrade.bought = true;
+            updateUI();
         }
     }
 
-    function harvestAll() {
-        let harvested = 0;
-        gameState.plants.forEach((plant, index) => {
-            if (plant) {
-                const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
-                if (progress >= 1) {
-                    harvestPlant(index);
-                    harvested++;
-                }
-            }
-        });
+    function initializeUI() {
+        const growersDiv = document.getElementById('growers');
+        const upgradesDiv = document.getElementById('upgrades');
         
-        if (harvested === 0) {
-            showNotification('No plants ready to harvest!');
-        }
+        // Create grower elements once
+        gameState.growers.forEach(g => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item';
+            itemDiv.innerHTML = `
+                <div class="item-header">
+                    <span class="item-name">${g.name}</span>
+                    <span class="item-owned" data-owned="${g.id}">0</span>
+                </div>
+                <div class="item-desc">${g.desc}</div>
+                <div class="item-stats">
+                    <div class="item-stat">
+                        <span>Production:</span>
+                        <span>${formatMoney(g.production)}/s</span>
+                    </div>
+                    <div class="item-stat">
+                        <span>Cost:</span>
+                        <span data-cost="${g.id}">${formatMoney(g.cost)}</span>
+                    </div>
+                </div>
+            `;
+            const btn = document.createElement('button');
+            btn.textContent = `Buy ${g.name}`;
+            btn.dataset.btn = g.id;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                buyGrower(g.id);
+            });
+            itemDiv.appendChild(btn);
+            growersDiv.appendChild(itemDiv);
+        });
+
+        // Create upgrade elements once
+        gameState.upgrades.forEach(u => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item';
+            itemDiv.innerHTML = `
+                <div class="item-header">
+                    <span class="item-name">${u.name}</span>
+                    <span class="item-owned" data-upgrade-status="${u.id}" style="display:none;">✓ OWNED</span>
+                </div>
+                <div class="item-desc">${u.desc}</div>
+                <div class="item-stats">
+                    <div class="item-stat">
+                        <span>Effect:</span>
+                        <span>×${u.multiplier}</span>
+                    </div>
+                    <div class="item-stat">
+                        <span>Cost:</span>
+                        <span>${formatMoney(u.cost)}</span>
+                    </div>
+                </div>
+            `;
+            const btn = document.createElement('button');
+            btn.textContent = 'Buy Upgrade';
+            btn.dataset.upgradebtn = u.id;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                buyUpgrade(u.id);
+            });
+            itemDiv.appendChild(btn);
+            upgradesDiv.appendChild(itemDiv);
+        });
     }
 
     function updateUI() {
-        document.getElementById('money').textContent = '$' + Math.floor(gameState.money);
-        document.getElementById('level').textContent = gameState.level;
-        document.getElementById('totalHarvest').textContent = gameState.totalHarvest;
-        document.getElementById('referrals').textContent = gameState.referrals;
-        document.getElementById('plantCost').textContent = Math.floor(gameState.plantCost * (1 - gameState.upgrades.cheaperPlanting * 0.1));
-        
-        // Update referral modal
-        document.getElementById('refCount').textContent = gameState.referrals;
-        document.getElementById('refBonus').textContent = gameState.referralBonus;
-    }
+        // Update stats
+        document.getElementById('money').textContent = formatMoney(gameState.money);
+        document.getElementById('perSecond').textContent = formatMoney(calculateProduction());
+        document.getElementById('totalEarned').textContent = formatMoney(gameState.totalEarned);
 
-    function showCoinAnimation(amount) {
-        const coin = document.createElement('div');
-        coin.className = 'coin-float';
-        coin.textContent = '+$' + Math.floor(amount);
-        coin.style.left = (window.innerWidth / 2) + 'px';
-        coin.style.top = (window.innerHeight / 2) + 'px';
-        document.body.appendChild(coin);
-        
-        playSound('coin');
-        
-        setTimeout(() => coin.remove(), 1000);
-    }
-
-    function showNotification(text) {
-        if (tg) {
-            tg.showAlert(text);
-        } else {
-            alert(text);
-        }
-    }
-
-    function startGameLoop() {
-        setInterval(() => {
-            renderPlants();
+        // Update growers
+        gameState.growers.forEach(g => {
+            const ownedEl = document.querySelector(`[data-owned="${g.id}"]`);
+            const costEl = document.querySelector(`[data-cost="${g.id}"]`);
+            const btnEl = document.querySelector(`[data-btn="${g.id}"]`);
             
-            // Auto-harvest if premium
-            if (gameState.premium.autoHarvest) {
-                gameState.plants.forEach((plant, index) => {
-                    if (plant) {
-                        const progress = (Date.now() - plant.plantedAt) / plant.growthTime;
-                        if (progress >= 1) {
-                            harvestPlant(index);
-                        }
-                    }
-                });
+            if (ownedEl) ownedEl.textContent = g.owned;
+            if (costEl) costEl.textContent = formatMoney(g.cost);
+            if (btnEl) btnEl.disabled = gameState.money < g.cost;
+        });
+
+        // Update upgrades
+        gameState.upgrades.forEach(u => {
+            const statusEl = document.querySelector(`[data-upgrade-status="${u.id}"]`);
+            const btnEl = document.querySelector(`[data-upgradebtn="${u.id}"]`);
+            
+            if (statusEl) {
+                statusEl.style.display = u.bought ? 'block' : 'none';
             }
-        }, 1000);
-    }
-
-    // Shop
-    function openShop() {
-        document.getElementById('shopModal').classList.add('active');
-        renderUpgrades();
-    }
-
-    function renderUpgrades() {
-        const list = document.getElementById('upgradesList');
-        list.innerHTML = '';
-        
-        upgrades.forEach(upgrade => {
-            const level = gameState.upgrades[upgrade.id];
-            const cost = upgrade.baseCost * Math.pow(2, level);
-            const canBuy = gameState.money >= cost && level < upgrade.maxLevel;
-            
-            const item = document.createElement('div');
-            item.className = 'upgrade-item';
-            item.innerHTML = `
-                <div class="upgrade-info">
-                    <h3>${upgrade.name} (${level}/${upgrade.maxLevel})</h3>
-                    <p>${upgrade.desc}</p>
-                </div>
-                <button class="buy-btn" ${!canBuy ? 'disabled' : ''} onclick="buyUpgrade('${upgrade.id}', ${cost})">
-                    $${cost}
-                </button>
-            `;
-            list.appendChild(item);
+            if (btnEl) {
+                btnEl.textContent = u.bought ? 'Purchased' : 'Buy Upgrade';
+                btnEl.disabled = u.bought || gameState.money < u.cost;
+            }
         });
     }
 
-    function buyUpgrade(id, cost) {
-        const upgrade = upgrades.find(u => u.id === id);
-        if (gameState.money >= cost && gameState.upgrades[id] < upgrade.maxLevel) {
-            gameState.money -= cost;
-            gameState.upgrades[id]++;
-            playSound('purchase');
-            saveGame();
-            updateUI();
-            renderUpgrades();
-            renderPlants();
-        }
-    }
+    // Initialize UI once
+    initializeUI();
+    updateUI();
 
-    function buyPremium(feature, stars) {
-        if (tg && tg.openInvoice) {
-            showNotification('Premium features use Telegram Stars. This is a demo - connect to a real payment provider.');
-            // In production, you'd create an invoice via your bot
-            // tg.openInvoice(invoiceUrl, (status) => { ... });
-        } else {
-            // Demo mode - just unlock
-            gameState.premium[feature] = true;
-            saveGame();
-            showNotification('Premium feature unlocked! (Demo mode)');
-        }
-    }
-
-    function switchTab(tabName) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        
-        event.target.classList.add('active');
-        document.getElementById(tabName).classList.add('active');
-    }
-
-    // Referral
-    function openReferral() {
-        document.getElementById('referralModal').classList.add('active');
-        const baseUrl = window.location.href.split('?')[0];
-        const refLink = `${baseUrl}?ref=${gameState.userId}`;
-        document.getElementById('referralLink').textContent = refLink;
-    }
-
-    function shareReferral() {
-        const baseUrl = window.location.href.split('?')[0];
-        const refLink = `${baseUrl}?ref=${gameState.userId}`;
-        const text = `🌿 Join me in Cannabis Tycoon! Grow plants and earn money! 💰\n\nGet $200 bonus when you start: ${refLink}`;
-        
-        if (tg) {
-            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(text)}`);
-        } else {
-            navigator.clipboard.writeText(refLink);
-            showNotification('Link copied to clipboard!');
-        }
-    }
-
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-    }
-
-    // Event Listeners
-    document.getElementById('plantBtn').onclick = () => {
-        const emptySlot = gameState.plants.findIndex(p => !p);
-        if (emptySlot !== -1) {
-            plantSeed(emptySlot);
-        } else {
-            showNotification('No empty slots! Harvest plants or buy more slots.');
-        }
-    };
-
-    document.getElementById('harvestBtn').onclick = harvestAll;
-    document.getElementById('shopBtn').onclick = openShop;
-    document.getElementById('referralBtn').onclick = openReferral;
-
-    // Start game
-    init();
+    // Game loop
+    setInterval(() => {
+        const production = calculateProduction();
+        gameState.money += production / 10;
+        gameState.totalEarned += production / 10;
+        updateUI();
+    }, 100);
 </script>
 ```
 
